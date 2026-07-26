@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-26T19:50:10.786Z",
+  "methodologies": [
+    {
+      "id": "tdd",
+      "enabled": true
+    },
+    {
+      "id": "bdd",
+      "enabled": false
+    },
+    {
+      "id": "atdd",
+      "enabled": false
+    },
+    {
+      "id": "sdd",
+      "enabled": false
+    },
+    {
+      "id": "v-model",
+      "enabled": false
+    },
+    {
+      "id": "unit",
+      "enabled": true
+    },
+    {
+      "id": "integration",
+      "enabled": false
+    },
+    {
+      "id": "mutation",
+      "enabled": false
+    },
+    {
+      "id": "property",
+      "enabled": false
+    },
+    {
+      "id": "continuous",
+      "enabled": false
+    },
+    {
+      "id": "white-box",
+      "enabled": false
+    },
+    {
+      "id": "e2e",
+      "enabled": false
+    },
+    {
+      "id": "snapshot",
+      "enabled": false
+    },
+    {
+      "id": "contract",
+      "enabled": false
+    },
+    {
+      "id": "mbt",
+      "enabled": false
+    },
+    {
+      "id": "test-design",
+      "enabled": false
+    },
+    {
+      "id": "black-box",
+      "enabled": false
+    },
+    {
+      "id": "gray-box",
+      "enabled": false
+    },
+    {
+      "id": "performance",
+      "enabled": false
+    },
+    {
+      "id": "security-testing",
+      "enabled": false
+    },
+    {
+      "id": "visual",
+      "enabled": false
+    },
+    {
+      "id": "exploratory",
+      "enabled": false
+    },
+    {
+      "id": "agile-testing",
+      "enabled": false
+    }
+  ]
+}

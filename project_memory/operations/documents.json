@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "filing": [
+    {
+      "id": "filing-docs",
+      "label": "Docs",
+      "path": "docs",
+      "description": "All technical documentation"
+    }
+  ],
+  "autoUpdate": [
+    {
+      "id": "doc-readme-md",
+      "path": "README.md",
+      "label": "README",
+      "sourceHint": "Keep in step with feature, config, and version changes.",
+      "cadence": "on-change"
+    },
+    {
+      "id": "doc-contributing-md",
+      "path": "CONTRIBUTING.md",
+      "label": "CONTRIBUTING",
+      "sourceHint": "Keep in step with feature, config, and version changes.",
+      "cadence": "on-change"
+    },
+    {
+      "id": "doc-security-md",
+      "path": "SECURITY.md",
+      "label": "SECURITY",
+      "sourceHint": "Keep in step with feature, config, and version changes.",
+      "cadence": "on-change"
+    }
+  ],
+  "updatedAt": "2026-07-26T19:53:09.509Z"
+}
