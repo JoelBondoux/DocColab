@@ -153,6 +153,12 @@ Set an absolute `root_path`, a relative `sync_config`, and only the folders agen
 may see in `exposed_folders`. The root must be beneath one of
 `mcp-config.json.allowed_project_roots`.
 
+Each exposed folder is recursive: agents can access every child file and subfolder
+beneath it. Add the highest-level folder whose full contents should be available;
+you do not need to list its descendants separately. Folder exposure does not copy
+or move content, and resolved paths that escape through `..` or a symlink remain
+blocked.
+
 Create the first owner:
 
 ```powershell

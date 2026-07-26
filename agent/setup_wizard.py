@@ -391,7 +391,7 @@ def run_interactive(
         input_fn,
     )
     exposed_text = _ask(
-        "Folders exposed to MCP agents (comma-separated)",
+        "Folders exposed to MCP agents (comma-separated; includes all descendants)",
         default="documents,references",
         input_fn=input_fn,
         validator=_valid_exposed_input,

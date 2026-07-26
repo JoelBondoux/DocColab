@@ -10,10 +10,12 @@ from agent.mcp_server.registry import ProjectRegistry, UserRegistry
 def test_path_resolver_only_allows_explicitly_exposed_folders(tmp_path: Path) -> None:
     root = tmp_path / "project"
     exposed = root / "documents"
+    nested = exposed / "chapters" / "drafts"
     private = root / "private"
-    exposed.mkdir(parents=True)
+    nested.mkdir(parents=True)
     private.mkdir()
     (exposed / "allowed.md").write_text("ok", encoding="utf-8")
+    (nested / "nested.md").write_text("nested", encoding="utf-8")
     (private / "secret.md").write_text("secret", encoding="utf-8")
     project = ProjectDefinition(
         id="alpha",
@@ -24,6 +26,10 @@ def test_path_resolver_only_allows_explicitly_exposed_folders(tmp_path: Path) ->
     resolver = ProjectPathResolver()
 
     assert resolver.resolve(project, "documents/allowed.md").read_text() == "ok"
+    assert (
+        resolver.resolve(project, "documents/chapters/drafts/nested.md").read_text()
+        == "nested"
+    )
     with pytest.raises(PathAccessDenied):
         resolver.resolve(project, "private/secret.md")
     with pytest.raises(PathAccessDenied):

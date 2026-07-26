@@ -53,8 +53,8 @@ On Windows, run the guided installer from PowerShell:
 ```
 
 It creates the virtual environment, installs DocColab, checks optional tools, and
-walks through Google/OneDrive, GitHub, AI, Tailscale, project folders, and the first
-owner. It refuses to overwrite an existing setup.
+walks through Google/OneDrive, GitHub, AI, Tailscale, recursively exposed project
+folders, and the first owner. It refuses to overwrite an existing setup.
 
 On any platform, install and launch the same wizard directly:
 
