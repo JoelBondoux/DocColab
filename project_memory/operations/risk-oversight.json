@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "findings": [],
+  "runs": [
+    {
+      "domain": "ethics",
+      "ranAt": "2026-07-26T21:28:51.330Z",
+      "findingCount": 0
+    },
+    {
+      "domain": "legal",
+      "ranAt": "2026-07-26T21:30:05.779Z",
+      "findingCount": 0
+    },
+    {
+      "domain": "commercial",
+      "ranAt": "2026-07-26T21:31:22.693Z",
+      "findingCount": 0
+    }
+  ],
+  "updatedAt": "2026-07-26T21:31:22.704Z"
+}

@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-26T21:32:37.451Z",
+  "project": {
+    "name": "DocColab"
+  },
+  "selfContactId": "contact-email-joelbondoux-net-1",
+  "contacts": [
+    {
+      "id": "contact-email-joelbondoux-net-1",
+      "name": "Joel Bondoux",
+      "kind": "person",
+      "links": [
+        {
+          "id": "link-email-joelbondoux-net",
+          "kind": "email",
+          "label": "Email",
+          "handle": "email@joelbondoux.net",
+          "deepLink": "mailto:email@joelbondoux.net",
+          "preferred": true
+        }
+      ],
+      "piiStored": true
+    },
+    {
+      "id": "contact-joel",
+      "name": "@joel",
+      "kind": "person",
+      "ref": {
+        "source": "local",
+        "displayLabel": "@joel"
+      },
+      "links": [
+        {
+          "id": "link-joel",
+          "kind": "github",
+          "label": "GitHub",
+          "handle": "@joel"
+        }
+      ],
+      "piiStored": false
+    }
+  ],
+  "stakeholders": [],
+  "teamMembers": [
+    {
+      "id": "tm-contact-email-joelbondoux-net-1",
+      "contactId": "contact-email-joelbondoux-net-1",
+      "discipline": "contributor"
+    },
+    {
+      "id": "tm-contact-joel",
+      "contactId": "contact-joel",
+      "discipline": "code-owner"
+    }
+  ],
+  "responsibilities": [
+    {
+      "id": "resp-code-ownership",
+      "area": "Code ownership",
+      "description": "Seeded from .github/CODEOWNERS. Review and refine.",
+      "ownerContactId": "contact-joel"
+    }
+  ],
+  "assignments": [],
+  "followUps": [],
+  "settings": {
+    "teamMode": "solo",
+    "nudgeOnActivation": true,
+    "remindersEnabled": false,
+    "outboundEnabled": false
+  }
+}

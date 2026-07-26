@@ -1,0 +1,36 @@
+# CODEOWNERS for DocColab
+# Maintainers for each area of the repository
+
+# Project Documentation and Architecture
+* docs/** @joel
+* project_memory/** @joel
+* README.md @joel
+* CONTRIBUTING.md @joel
+* SECURITY.md @joel
+* project.example.json @joel
+* config.example.json @joel
+* mcp-config.example.json @joel
+
+# Core Agent Logic
+agent/** @joel
+agent/*/*.py @joel
+
+# Google Integration
+agent/google/** @joel
+agent/google/*/*.py @joel
+
+# Tests
+tests/** @joel
+
+# Configuration Files
+.gitignore @joel
+.pyproject.toml @joel
+setup.ps1 @joel
+.env.example @joel
+
+# Documentation Examples
+users.example.json @joel
+config.example.json @joel
+
+# GitHub Workflows
+.github/workflows/** @joel
