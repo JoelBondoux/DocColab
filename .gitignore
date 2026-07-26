@@ -2,6 +2,11 @@
 .env
 .env.*
 !.env.example
+config.json
+mcp-config.json
+registry/users.json
+registry/projects/*.json
+secrets/
 
 # Editors and operating systems
 .idea/

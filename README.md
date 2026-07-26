@@ -46,6 +46,25 @@ creating replacement identities.
 
 Requires Python 3.11+; Pandoc is recommended for the highest-fidelity conversion.
 
+On Windows, run the guided installer from PowerShell:
+
+```powershell
+.\setup.ps1
+```
+
+It creates the virtual environment, installs DocColab, checks optional tools, and
+walks through Google/OneDrive, GitHub, AI, Tailscale, project folders, and the first
+owner. It refuses to overwrite an existing setup.
+
+On any platform, install and launch the same wizard directly:
+
+```text
+python -m pip install -e .
+doccolab-setup
+```
+
+For manual setup:
+
 ```powershell
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1

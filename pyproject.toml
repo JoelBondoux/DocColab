@@ -43,6 +43,7 @@ dev = [
 [project.scripts]
 doccolab = "agent.main:cli"
 doccolab-mcp = "agent.mcp_server.main:cli"
+doccolab-setup = "agent.setup_wizard:cli"
 
 [tool.hatch.build.targets.wheel]
 packages = ["agent"]

@@ -12,6 +12,8 @@ All notable changes to DocColab are documented here.
 - Add an authenticated, multi-user, multi-project MCP server with 25 tools,
   folder isolation, roles, auditing, and hot reload.
 - Add Tailscale private-access guidance and loopback/DNS-rebinding protections.
+- Add a guided cross-platform setup wizard and a one-command PowerShell launcher
+  with validated configuration generation and no-overwrite protection.
 - Add config, credential, OAuth, API, architecture, operations, testing, and
   troubleshooting documentation.
 - Adopt the `CLAUDE.md` TDD, unit, continuous/shift-left, and security testing

@@ -1,5 +1,51 @@
 # Complete setup
 
+## Guided setup
+
+The recommended Windows path is:
+
+```powershell
+.\setup.ps1
+```
+
+Optional launcher parameters:
+
+```powershell
+.\setup.ps1 -SkipInstall
+.\setup.ps1 -OutputDirectory C:\Documents\MyDocColabProject
+```
+
+The launcher creates `.venv`, installs the project, and starts
+`doccolab-setup`. The wizard:
+
+- checks for Git, Pandoc, and Tailscale;
+- asks which Google Docs and/or OneDrive document to synchronize;
+- configures GitHub and the optional OpenAI or Anthropic pipeline;
+- creates the MCP server, project membership, and exposed-folder settings;
+- writes provider values only to the ignored `.env` file;
+- keeps generated live configuration, membership files, and OAuth secrets out of Git;
+- generates a high-entropy webhook token;
+- issues the first owner bearer token once while storing only its SHA-256 digest;
+- validates all configuration models before writing anything;
+- refuses to overwrite any existing setup file.
+
+On macOS, Linux, or an existing Python environment:
+
+```text
+python -m pip install -e .
+doccolab-setup
+```
+
+To configure a different directory:
+
+```text
+doccolab-setup --output-dir /absolute/path/to/project
+```
+
+Save the displayed MCP owner token immediately. If setup finds `config.json`,
+`mcp-config.json`, `.env`, or matching registry files, it stops without modifying
+any of them. Move or back up the old configuration before rerunning.
+
 ## 1. Install local dependencies
 
 Install Git, Python 3.11 or later, and optionally Pandoc. Pandoc gives the best
@@ -17,6 +63,9 @@ Copy-Item .env.example .env
 Copy-Item config.example.json config.json
 Copy-Item mcp-config.example.json mcp-config.json
 ```
+
+The remaining sections describe every provider step in detail and are useful
+after the wizard prints its follow-up commands.
 
 ## 2. Google OAuth
 
