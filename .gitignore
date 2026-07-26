@@ -25,6 +25,19 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .venv/
+.coverage
+coverage.xml
 
 # Document synchronization working data
 .doccolab/
+
+# Local provider credentials
+client_secret*.json
+credentials*.json
+token*.json
+
+# Python packaging and tooling
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.tox/

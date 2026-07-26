@@ -1,0 +1,19 @@
+{
+  "id": "screenplay",
+  "title": "Screenplay",
+  "root_path": "C:/Users/your-name/Documents/DocColab/Screenplay",
+  "sync_config": "config.json",
+  "exposed_folders": [
+    "documents",
+    "references"
+  ],
+  "members": {
+    "owner@example.com": "owner",
+    "writer@example.com": "editor",
+    "reader@example.com": "viewer"
+  },
+  "allowed_tools": [
+    "*"
+  ],
+  "enabled": true
+}

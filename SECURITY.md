@@ -1,10 +1,38 @@
 # Security Policy
 
-DocColab is currently in an early design stage.
+## Reporting
 
-Please do not disclose suspected vulnerabilities in public issues. Use the
-repository's private vulnerability reporting feature when it is available, or
-contact the repository owner privately through their GitHub profile.
+Do not disclose suspected vulnerabilities in public issues. Use GitHub private
+vulnerability reporting for this repository, or contact the repository owner
+privately through their GitHub profile. Include the affected version, component,
+reproduction steps, impact, and suggested mitigation.
 
-Security reports should include the affected component, reproduction steps,
-potential impact, and any suggested mitigation.
+## Security model
+
+- The MCP and webhook listeners bind to `127.0.0.1` by default.
+- Tailscale Serve provides private HTTPS; no router port forwarding is needed.
+- MCP calls require a high-entropy bearer token. Only its SHA-256 digest is stored.
+- Global roles and project membership are checked for every tool invocation.
+- File access is restricted to configured project roots and exposed folders.
+  Resolved paths are checked after symlink resolution.
+- Provider credentials are loaded from environment variables or the operating
+  system keyring. They must never be stored in project JSON or source control.
+- Project/user configuration writes are atomic and audited. The final enabled
+  owner cannot be removed or demoted.
+- Size limits, strict configuration schemas, optimistic GitHub blob checks,
+  OneDrive ETags, and three-way merge checks reduce unsafe overwrite risk.
+- MCP DNS-rebinding protection remains enabled. Add only the exact MagicDNS
+  hostname used by your Tailnet to `allowed_hosts` and `allowed_origins`.
+
+Tailscale network access is an additional boundary, not a substitute for DocColab
+authentication. Rotate a bearer token immediately if it is exposed.
+
+## Automated checks
+
+Every pull request runs unit/integration tests, branch coverage, Ruff, mypy,
+Bandit, pip-audit, dependency review, and CodeQL. Dependabot covers both pip and
+GitHub Actions dependencies. Security regressions are correctness bugs.
+
+## Supported versions
+
+Until a 1.0 release, security fixes are applied to the latest `main` branch.

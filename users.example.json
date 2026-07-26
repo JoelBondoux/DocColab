@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "users": [
+    {
+      "user_id": "owner@example.com",
+      "display_name": "Project owner",
+      "role": "owner",
+      "token_sha256": "replace-with-sha256-of-a-random-bearer-token",
+      "enabled": true
+    }
+  ]
+}
