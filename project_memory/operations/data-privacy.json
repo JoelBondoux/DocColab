@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "enabled": true,
+  "rules": [
+    {
+      "id": "no-secrets-in-memory",
+      "action": "block",
+      "description": "Do not store credentials, bearer tokens, API keys, OAuth payloads, or private document contents in project memory."
+    },
+    {
+      "id": "no-raw-contact-handles",
+      "action": "redact",
+      "description": "Replace personal email addresses, phone numbers, postal addresses, and private deep links with role-only references."
+    },
+    {
+      "id": "no-raw-session-transcripts",
+      "action": "exclude",
+      "description": "Keep raw assistant transcripts and tool telemetry local; commit only reviewed summaries with durable project decisions."
+    },
+    {
+      "id": "review-before-publish",
+      "action": "require-review",
+      "description": "Run secret and PII review before publishing project-memory changes."
+    }
+  ],
+  "compliancePacks": [
+    "gdpr-pii"
+  ],
+  "trustedModelIds": [],
+  "updatedAt": "2026-07-26T21:32:32.976Z"
+}

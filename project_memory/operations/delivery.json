@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "stages": [
+    {
+      "id": "stage-local",
+      "name": "Local",
+      "kind": "local",
+      "rank": 0,
+      "description": "Your own machine. Where you write and run code day to day. Data here is disposable — nothing your users see lives at this stage.",
+      "config": {},
+      "hosting": {
+        "provider": "localhost"
+      },
+      "data": {
+        "kind": "none",
+        "label": "No application database"
+      },
+      "backupPolicy": {
+        "required": false
+      },
+      "promotionPolicy": {
+        "requiresApproval": false,
+        "requireVersionBump": false,
+        "requireChangelog": false,
+        "requiredChecks": []
+      },
+      "rollbackPolicy": {},
+      "isProtected": false
+    },
+    {
+      "id": "stage-staging",
+      "name": "Staging",
+      "kind": "staging",
+      "rank": 1,
+      "description": "A production-like rehearsal environment. Changes land here first so they can be tested against realistic data and settings before any real users are affected.",
+      "branchRef": "main",
+      "config": {},
+      "hosting": {},
+      "data": {
+        "kind": "none",
+        "label": "No application database"
+      },
+      "backupPolicy": {
+        "required": false
+      },
+      "promotionPolicy": {
+        "requiresApproval": false,
+        "requireVersionBump": true,
+        "requireChangelog": true,
+        "requiredChecks": [
+          "Working tree clean",
+          "Lint passes",
+          "Tests pass"
+        ],
+        "viaPullRequest": false,
+        "requiredStatusChecks": [
+          "Dependency review"
+        ]
+      },
+      "rollbackPolicy": {
+        "runbookRef": "project_memory/operations/delivery.md"
+      },
+      "isProtected": false
+    },
+    {
+      "id": "stage-production",
+      "name": "Production (release-ready)",
+      "kind": "production",
+      "rank": 2,
+      "description": "PyPI package distribution is automated by .github/workflows/release.yml; activation requires the external PyPI trusted-publisher registration and protected GitHub pypi environment.",
+      "branchRef": "main",
+      "config": {},
+      "hosting": {
+        "provider": "PyPI",
+        "url": "",
+        "healthCheckUrl": ""
+      },
+      "data": {
+        "kind": "none",
+        "label": "No application database"
+      },
+      "backupPolicy": {
+        "required": false,
+        "runbookRef": "project_memory/operations/delivery.md"
+      },
+      "promotionPolicy": {
+        "requiresApproval": true,
+        "requireVersionBump": true,
+        "requireChangelog": true,
+        "requiredChecks": [
+          "Working tree clean",
+          "Lint passes",
+          "Tests pass"
+        ],
+        "viaPullRequest": false,
+        "requiredStatusChecks": [
+          "Dependency review"
+        ]
+      },
+      "rollbackPolicy": {
+        "runbookRef": "project_memory/operations/delivery.md"
+      },
+      "isProtected": true
+    }
+  ],
+  "paths": [
+    {
+      "id": "promote-local-staging",
+      "fromStageId": "stage-local",
+      "toStageId": "stage-staging"
+    },
+    {
+      "id": "promote-staging-production",
+      "fromStageId": "stage-staging",
+      "toStageId": "stage-production"
+    }
+  ],
+  "updatedAt": "2026-07-27T12:00:00Z"
+}

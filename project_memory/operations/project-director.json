@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-27T00:05:32.884Z",
+  "project": {
+    "name": "DocColab"
+  },
+  "selfContactId": "contact-self",
+  "contacts": [
+    {
+      "id": "contact-self",
+      "name": "Joel Bondoux",
+      "kind": "person",
+      "links": [],
+      "piiStored": false
+    },
+    {
+      "id": "contact-joelbondoux",
+      "name": "@JoelBondoux",
+      "kind": "person",
+      "ref": {
+        "source": "local",
+        "displayLabel": "@JoelBondoux"
+      },
+      "links": [
+        {
+          "id": "link-joelbondoux",
+          "kind": "github",
+          "label": "GitHub",
+          "handle": "@JoelBondoux"
+        }
+      ],
+      "piiStored": false
+    }
+  ],
+  "stakeholders": [],
+  "teamMembers": [
+    {
+      "id": "tm-contact-self",
+      "contactId": "contact-self",
+      "discipline": "contributor"
+    },
+    {
+      "id": "tm-contact-joelbondoux",
+      "contactId": "contact-joelbondoux",
+      "discipline": "code-owner"
+    }
+  ],
+  "responsibilities": [
+    {
+      "id": "resp-code-ownership",
+      "area": "Code ownership",
+      "description": "Seeded from .github/CODEOWNERS. Review and refine.",
+      "ownerContactId": "contact-joelbondoux"
+    }
+  ],
+  "assignments": [],
+  "followUps": [],
+  "settings": {
+    "teamMode": "solo",
+    "nudgeOnActivation": true,
+    "remindersEnabled": false,
+    "outboundEnabled": false
+  }
+}

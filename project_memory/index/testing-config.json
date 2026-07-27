@@ -1,10 +1,11 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-26T19:50:10.786Z",
+  "updatedAt": "2026-07-26T20:15:15.168Z",
   "methodologies": [
     {
       "id": "tdd",
-      "enabled": true
+      "enabled": true,
+      "assignedAgentId": "test-developer"
     },
     {
       "id": "bdd",
@@ -24,11 +25,13 @@
     },
     {
       "id": "unit",
-      "enabled": true
+      "enabled": true,
+      "assignedAgentId": "test-developer"
     },
     {
       "id": "integration",
-      "enabled": false
+      "enabled": true,
+      "assignedAgentId": "test-developer"
     },
     {
       "id": "mutation",
@@ -40,7 +43,8 @@
     },
     {
       "id": "continuous",
-      "enabled": false
+      "enabled": true,
+      "assignedAgentId": "test-developer"
     },
     {
       "id": "white-box",
@@ -80,7 +84,8 @@
     },
     {
       "id": "security-testing",
-      "enabled": false
+      "enabled": true,
+      "assignedAgentId": "test-developer"
     },
     {
       "id": "visual",

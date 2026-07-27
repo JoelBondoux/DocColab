@@ -1,0 +1,26 @@
+{
+  "host": "127.0.0.1",
+  "port": 8765,
+  "mcp_path": "/mcp",
+  "users_file": "registry/users.json",
+  "projects_directory": "registry/projects",
+  "audit_log": ".doccolab/audit.jsonl",
+  "allowed_project_roots": [
+    "C:/Users/your-name/Documents/DocColab"
+  ],
+  "hot_reload_seconds": 5,
+  "run_sync_agents": true,
+  "max_read_bytes": 5242880,
+  "max_write_bytes": 10485760,
+  "allowed_hosts": [
+    "127.0.0.1:*",
+    "localhost:*",
+    "doccolab.your-tailnet.ts.net"
+  ],
+  "allowed_origins": [
+    "http://127.0.0.1:*",
+    "http://localhost:*",
+    "https://doccolab.your-tailnet.ts.net"
+  ],
+  "log_level": "INFO"
+}
