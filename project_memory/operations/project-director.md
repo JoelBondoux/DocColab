@@ -19,13 +19,13 @@ _None recorded yet._
 | Name | Discipline | Allocation | Preferred channel |
 | --- | --- | --- | --- |
 | Joel Bondoux (you) | contributor | — | email (Email) |
-| @joel | code-owner | — | github (GitHub) |
+| @JoelBondoux | code-owner | — | github (GitHub) |
 
 ## Responsibilities
 
 | Area | Owner | Backup | Description |
 | --- | --- | --- | --- |
-| Code ownership | @joel | — | Seeded from .github/CODEOWNERS. Review and refine. |
+| Code ownership | @JoelBondoux | — | Seeded from .github/CODEOWNERS. Review and refine. |
 
 ## Assignments
 
@@ -36,4 +36,4 @@ _None recorded yet._
 _No open follow-ups._
 ---
 
-_Last updated: 2026-07-26T21:32:37.451Z._
+_Last updated: 2026-07-27T00:05:32.884Z._

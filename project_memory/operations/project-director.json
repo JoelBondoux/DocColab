@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-07-26T21:32:37.451Z",
+  "updatedAt": "2026-07-27T00:05:32.884Z",
   "project": {
     "name": "DocColab"
   },
@@ -23,19 +23,19 @@
       "piiStored": true
     },
     {
-      "id": "contact-joel",
-      "name": "@joel",
+      "id": "contact-joelbondoux",
+      "name": "@JoelBondoux",
       "kind": "person",
       "ref": {
         "source": "local",
-        "displayLabel": "@joel"
+        "displayLabel": "@JoelBondoux"
       },
       "links": [
         {
-          "id": "link-joel",
+          "id": "link-joelbondoux",
           "kind": "github",
           "label": "GitHub",
-          "handle": "@joel"
+          "handle": "@JoelBondoux"
         }
       ],
       "piiStored": false
@@ -49,8 +49,8 @@
       "discipline": "contributor"
     },
     {
-      "id": "tm-contact-joel",
-      "contactId": "contact-joel",
+      "id": "tm-contact-joelbondoux",
+      "contactId": "contact-joelbondoux",
       "discipline": "code-owner"
     }
   ],
@@ -59,7 +59,7 @@
       "id": "resp-code-ownership",
       "area": "Code ownership",
       "description": "Seeded from .github/CODEOWNERS. Review and refine.",
-      "ownerContactId": "contact-joel"
+      "ownerContactId": "contact-joelbondoux"
     }
   ],
   "assignments": [],

@@ -1,42 +1,25 @@
-"""
-Minimal test to verify CI signals are working.
-This test should fail initially to demonstrate the CI gap.
-"""
+from pathlib import Path
 
-def test_ci_signals_exist():
-    """Verify that CI workflow signals are properly configured."""
-    # This test will fail initially because there's no CI workflow file
-    # After adding .github/workflows/ci.yml, this should pass
-    import os
-    ci_workflow_path = ".github/workflows/ci.yml"
-    
-    # Check if CI workflow exists
-    assert os.path.exists(ci_workflow_path), (
-        f"CI workflow file missing: {ci_workflow_path}. "
-        "This prevents automated linting and testing on push/PR."
-    )
-    
-    # Verify it contains expected jobs
-    with open(ci_workflow_path) as f:
-        content = f.read()
-        assert "jobs:" in content, "CI workflow missing jobs section"
-        assert "test:" in content, "CI workflow missing test job"
-        assert "lint" in content, "CI workflow missing lint step"
+ROOT = Path(__file__).resolve().parents[1]
+CI_WORKFLOW = ROOT / ".github" / "workflows" / "ci.yml"
 
 
-def test_lint_command_works():
-    """Verify that the lint command can execute without errors."""
-    import subprocess
-    
-    # This should work after hatch run lint is properly configured
-    result = subprocess.run(
-        ["hatch", "run", "lint"],
-        capture_output=True,
-        text=True
-    )
-    
-    # The command should complete successfully (exit code 0)
-    assert result.returncode == 0, (
-        f"Lint command failed with exit code {result.returncode}. "
-        f"stdout: {result.stdout}\nstderr: {result.stderr}"
-    )
+def test_ci_workflow_runs_project_quality_gates() -> None:
+    content = CI_WORKFLOW.read_text(encoding="utf-8")
+
+    assert "jobs:" in content
+    assert "ruff check agent tests" in content
+    assert "mypy agent" in content
+    assert "pytest --cov=agent --cov-branch" in content
+    assert "--cov-fail-under=50" in content
+    assert "pip-audit" in content
+    assert "bandit -c pyproject.toml -r agent" in content
+
+
+def test_ci_workflow_surfaces_coverage_results() -> None:
+    content = CI_WORKFLOW.read_text(encoding="utf-8")
+
+    assert "--cov-report=term-missing" in content
+    assert "--cov-report=xml" in content
+    assert "actions/upload-artifact@" in content
+    assert "path: coverage.xml" in content

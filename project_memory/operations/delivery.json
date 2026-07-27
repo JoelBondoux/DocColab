@@ -64,14 +64,14 @@
     },
     {
       "id": "stage-production",
-      "name": "Production",
+      "name": "Production (planned)",
       "kind": "production",
       "rank": 2,
-      "description": "The live environment your real users depend on. Every change here is treated as high-risk: it is backed up first, requires sign-off, and is never force-pushed.",
+      "description": "Planned PyPI package distribution. This stage is not active until trusted publishing and an automated release workflow are configured.",
       "branchRef": "main",
       "config": {},
       "hosting": {
-        "provider": "PyPI",
+        "provider": "PyPI (planned)",
         "url": "",
         "healthCheckUrl": ""
       },
@@ -115,5 +115,5 @@
       "toStageId": "stage-production"
     }
   ],
-  "updatedAt": "2026-07-26T20:14:22.220Z"
+  "updatedAt": "2026-07-27T00:05:32.884Z"
 }

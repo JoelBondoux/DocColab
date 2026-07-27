@@ -11,7 +11,13 @@ class AccessController:
     def role_for(self, user: UserRecord, project: ProjectDefinition) -> Role | None:
         if user.role == Role.OWNER:
             return Role.OWNER
-        return project.members.get(user.user_id)
+        project_role = project.members.get(user.user_id)
+        if project_role is None:
+            return None
+        return min(
+            (user.role, project_role),
+            key=lambda role: ROLE_LEVEL[role],
+        )
 
     def authorize(
         self,

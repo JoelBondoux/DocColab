@@ -1,1 +1,9 @@
 operations/project-director.md
+project_soul.md
+operations/delivery.md
+operations/testing-strategy.md
+../docs/ARCHITECTURE.md
+../docs/OPERATIONS.md
+../docs/TESTING.md
+../SECURITY.md
+../CONTRIBUTING.md

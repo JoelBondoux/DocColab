@@ -38,4 +38,4 @@
 
 ### branching
 
-- 'develop' is the routine integration branch and 'master' is the protected release-ready branch.
+- 'develop' is the routine integration branch and 'main' is the protected release-ready branch.

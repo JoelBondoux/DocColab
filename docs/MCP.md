@@ -17,11 +17,11 @@ requires `project_id`.
 | `doccolab.read_file` | viewer | Read an exposed project file |
 | `doccolab.write_file` | editor | Atomically write an exposed file |
 | `doccolab.list_files` | viewer | List one exposed directory |
-| `doccolab.convert_docx_to_md` | viewer | Convert DOCX to Markdown |
+| `doccolab.convert_docx_to_md` | editor | Convert DOCX to Markdown |
 | `doccolab.convert_md_to_docx` | editor | Convert Markdown to DOCX |
-| `doccolab.pull_google_doc` | viewer | Fetch configured Google content |
+| `doccolab.pull_google_doc` | editor | Fetch configured Google content |
 | `doccolab.push_google_doc` | editor | Update configured Google file |
-| `doccolab.pull_onedrive_file` | viewer | Fetch configured OneDrive item |
+| `doccolab.pull_onedrive_file` | editor | Fetch configured OneDrive item |
 | `doccolab.push_onedrive_file` | editor | Update item with ETag check |
 | `doccolab.sync_github` | editor | Run project GitHub synchronization |
 | `doccolab.run_claude_pipeline` | editor | Rewrite supplied Markdown |
@@ -88,8 +88,9 @@ works only while the client device is connected to the authorized Tailnet.
 
 ## Audit and rotation
 
-Every accepted tool request is written to the configured JSONL audit log with
-time, user, project, tool, outcome, and non-secret metadata. Rotate a token:
+Every authorized tool invocation is written to the configured JSONL audit log
+with time, user, project, tool, and non-secret request metadata. Runtime failures
+are also emitted to application logs. Rotate a token:
 
 ```powershell
 doccolab-mcp --config mcp-config.json rotate-token --user-id user@example.com

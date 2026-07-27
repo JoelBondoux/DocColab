@@ -1,3 +1,5 @@
+import os
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -34,6 +36,38 @@ def test_path_resolver_only_allows_explicitly_exposed_folders(tmp_path: Path) ->
         resolver.resolve(project, "private/secret.md")
     with pytest.raises(PathAccessDenied):
         resolver.resolve(project, "../outside.md", must_exist=False)
+
+
+def test_path_resolver_blocks_symlink_escape_from_exposed_folder(tmp_path: Path) -> None:
+    root = tmp_path / "project"
+    documents = root / "documents"
+    outside = tmp_path / "outside"
+    documents.mkdir(parents=True)
+    outside.mkdir()
+    (outside / "secret.md").write_text("secret", encoding="utf-8")
+    link = documents / "escape"
+    try:
+        link.symlink_to(outside, target_is_directory=True)
+    except OSError as exc:
+        if os.name != "nt":
+            pytest.skip(f"Directory symlinks are unavailable: {exc}")
+        result = subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(link), str(outside)],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode:
+            pytest.skip(f"Directory links are unavailable: {result.stderr or result.stdout}")
+    project = ProjectDefinition(
+        id="alpha",
+        title="Alpha",
+        root_path=root,
+        exposed_folders=["documents"],
+    )
+
+    with pytest.raises(PathAccessDenied, match="project root"):
+        ProjectPathResolver().resolve(project, "documents/escape/secret.md")
 
 
 def test_user_registry_stores_only_token_hash_and_protects_last_owner(

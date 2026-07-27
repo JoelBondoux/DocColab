@@ -29,12 +29,13 @@ A production-like rehearsal environment. Changes land here first so they can be 
 - **Data:** No application database
 - **Backup before promotion:** not required
 
-### 3. Production — `production` 🔒 protected
+### 3. Production (planned) — `production` 🔒 protected
 
-The live environment your real users depend on. Every change here is treated as high-risk: it is backed up first, requires sign-off, and is never force-pushed.
+Planned PyPI package distribution. This stage is not active until trusted
+publishing and an automated release workflow are configured.
 
 - **Branch:** `main`
-- **Hosting:** PyPI
+- **Hosting:** PyPI (planned)
 - **Config source:** — (location only — secret values stay in your secret store)
 - **Data:** No application database
 - **Backup before promotion:** not required
@@ -75,4 +76,4 @@ Every promotion runs the same guarded sequence:
 
 ---
 
-_Last updated: 2026-07-26T20:14:22.220Z._
+_Last updated: 2026-07-27T00:05:32.884Z._

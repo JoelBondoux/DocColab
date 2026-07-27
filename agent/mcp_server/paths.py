@@ -18,9 +18,12 @@ class ProjectPathResolver:
         relative = Path(value)
         if relative.is_absolute() or ".." in relative.parts or not relative.parts:
             raise PathAccessDenied("Path must be project-relative and cannot contain '..'")
-        candidate = (project.root_path / relative).resolve(strict=False)
+        project_root = project.root_path.resolve(strict=False)
+        candidate = (project_root / relative).resolve(strict=False)
+        if candidate != project_root and not candidate.is_relative_to(project_root):
+            raise PathAccessDenied("Path resolves outside the project root")
         allowed = [
-            (project.root_path / exposed).resolve(strict=False)
+            (project_root / exposed).resolve(strict=False)
             for exposed in project.exposed_folders
         ]
         if not any(candidate == root or candidate.is_relative_to(root) for root in allowed):

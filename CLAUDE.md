@@ -45,5 +45,5 @@ This project enforces **4** testing methodologies. When writing or verifying tes
 - **Bug Classification:** Safety and security regressions are correctness bugs, not polish work.
 - **Architecture:** Long-term project context belongs in the SSOT under project_memory/.
 - **Credentials:** Provider credentials live in SecretStorage, not in project memory or source.
-- **Branching:** 'develop' is the routine integration branch and 'master' is the protected release-ready branch.
+- **Branching:** 'develop' is the routine integration branch and 'main' is the protected release-ready branch.
 <!-- atlasmind:shared-instructions:end -->

@@ -37,7 +37,7 @@ def test_project_role_and_tool_allowlist_are_both_required(tmp_path: Path) -> No
         )
     )
     access = AccessController(registry)
-    editor = _user("editor@example.com", Role.VIEWER)
+    editor = _user("editor@example.com", Role.EDITOR)
 
     assert access.authorize(
         editor,
@@ -58,4 +58,40 @@ def test_project_role_and_tool_allowlist_are_both_required(tmp_path: Path) -> No
             "alpha",
             "doccolab.read_file",
             Role.OWNER,
+        )
+
+
+def test_global_role_caps_project_membership_role(tmp_path: Path) -> None:
+    root = tmp_path / "root"
+    root.mkdir()
+    registry = ProjectRegistry(
+        MCPServerConfig(
+            users_file=tmp_path / "users.json",
+            projects_directory=tmp_path / "projects",
+            audit_log=tmp_path / "audit.jsonl",
+            allowed_project_roots=[root],
+        )
+    )
+    project = registry.set(
+        ProjectDefinition(
+            id="alpha",
+            title="Alpha",
+            root_path=root,
+            members={
+                "viewer@example.com": Role.OWNER,
+                "editor@example.com": Role.OWNER,
+            },
+        )
+    )
+    access = AccessController(registry)
+
+    assert access.role_for(_user("viewer@example.com", Role.VIEWER), project) == Role.VIEWER
+    assert access.role_for(_user("editor@example.com", Role.EDITOR), project) == Role.EDITOR
+    assert access.role_for(_user("global-owner@example.com", Role.OWNER), project) == Role.OWNER
+    with pytest.raises(AccessDenied, match="requires editor"):
+        access.authorize(
+            _user("viewer@example.com", Role.VIEWER),
+            "alpha",
+            "doccolab.write_file",
+            Role.EDITOR,
         )

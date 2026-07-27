@@ -43,7 +43,7 @@ def test_file_tools_are_project_scoped_atomic_and_audited(tmp_path: Path) -> Non
     )
     identity = UserRecord(
         user_id="editor@example.com",
-        role=Role.VIEWER,
+        role=Role.EDITOR,
         token_sha256="a" * 64,
     )
     context = set_current_user(identity)

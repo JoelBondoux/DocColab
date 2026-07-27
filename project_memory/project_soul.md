@@ -3,7 +3,7 @@
 > This file is the living identity of the project.
 
 ## Project Type
-Unknown
+Python application and MCP service
 
 ## Vision
 DocColab is an open project exploring a Git-native collaboration method for
@@ -20,14 +20,14 @@ documents.
 - Safety and security regressions are correctness bugs, not polish work.
 - Long-term project context belongs in the SSOT under `project_memory/`.
 - Provider credentials live in SecretStorage, not in project memory or source.
-- `develop` is the routine integration branch and `master` is the protected release-ready branch.
-- See `decisions/development-guardrails.md`, `operations/security-and-safety.md`, and `architecture/runtime-and-surfaces.md` for supporting detail.
+- `develop` is the routine integration branch and `main` is the protected release-ready branch.
+- `docs/ARCHITECTURE.md`, `SECURITY.md`, and `docs/OPERATIONS.md` are the
+  implementation, security, and operational sources of truth.
 
 ## Imported References
-- architecture/project-overview.md
-- architecture/runtime-and-surfaces.md
-- architecture/model-routing.md
-- architecture/agents-and-skills.md
-- operations/development-workflow.md
-- decisions/development-guardrails.md
-- roadmap/improvement-plan.md
+- ../README.md
+- ../docs/ARCHITECTURE.md
+- ../docs/OPERATIONS.md
+- ../docs/TESTING.md
+- ../SECURITY.md
+- ../CONTRIBUTING.md

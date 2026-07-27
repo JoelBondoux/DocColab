@@ -20,7 +20,9 @@ Thank you for helping build DocColab.
    trade-offs.
 
 Please keep pull requests focused and do not commit credentials, access tokens,
-private documents, or exported user data.
+private documents, or exported user data. Complete the repository pull request
+template with the checks actually run; explain any unchecked item rather than
+marking it complete without evidence.
 
 Before opening a pull request, run:
 
