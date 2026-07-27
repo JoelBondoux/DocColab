@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Callable
 from dataclasses import dataclass
+from importlib import import_module
 from pathlib import Path
-from typing import BinaryIO
+from typing import BinaryIO, cast
 
 
 @dataclass(slots=True)
@@ -48,28 +50,35 @@ def _lock(handle: BinaryIO) -> None:
         handle.flush()
     handle.seek(0)
     if os.name == "nt":
-        import msvcrt
-
-        msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+        _windows_lock(handle, "LK_NBLCK")
         return
-    import fcntl
-
-    fcntl.flock(  # type: ignore[attr-defined]
-        handle.fileno(),
-        fcntl.LOCK_EX | fcntl.LOCK_NB,  # type: ignore[attr-defined]
-    )
+    _posix_lock(handle, exclusive=True)
 
 
 def _unlock(handle: BinaryIO) -> None:
     handle.seek(0)
     if os.name == "nt":
-        import msvcrt
-
-        msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+        _windows_lock(handle, "LK_UNLCK")
         return
-    import fcntl
+    _posix_lock(handle, exclusive=False)
 
-    fcntl.flock(  # type: ignore[attr-defined]
-        handle.fileno(),
-        fcntl.LOCK_UN,  # type: ignore[attr-defined]
+
+def _windows_lock(handle: BinaryIO, mode_name: str) -> None:
+    module_values = vars(import_module("msvcrt"))
+    locking = cast(Callable[[int, int, int], None], module_values["locking"])
+    mode = cast(int, module_values[mode_name])
+    locking(handle.fileno(), mode, 1)
+
+
+def _posix_lock(handle: BinaryIO, *, exclusive: bool) -> None:
+    module_values = vars(import_module("fcntl"))
+    flock = cast(Callable[[int, int], None], module_values["flock"])
+    operation = cast(
+        int,
+        (
+            module_values["LOCK_EX"] | module_values["LOCK_NB"]
+            if exclusive
+            else module_values["LOCK_UN"]
+        ),
     )
+    flock(handle.fileno(), operation)
