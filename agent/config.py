@@ -8,6 +8,8 @@ from typing import Literal
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from agent.secret_store import require_secret
+
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -21,6 +23,7 @@ class AgentConfig(StrictModel):
     state_database: Path = Path(".doccolab/state.db")
     workspace_directory: Path = Path(".doccolab/work")
     log_level: str = "INFO"
+    event_retention_days: int = Field(default=30, ge=1, le=3650)
 
 
 class GoogleConfig(StrictModel):
@@ -184,10 +187,7 @@ def load_config(path: str | Path) -> AppConfig:
 
 
 def require_env(name: str) -> str:
-    value = os.getenv(name)
-    if not value:
-        raise RuntimeError(f"Required environment variable {name} is not set")
-    return value
+    return require_secret(name)
 
 
 def _resolve(base: Path, value: Path) -> Path:

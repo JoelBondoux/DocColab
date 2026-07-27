@@ -4,11 +4,11 @@ Date: 2026-07-27
 
 ## Outcome
 
-The repository-wide architecture, security, functionality, UI/UX, memory/SSOT,
-code structure, testing, delivery, and documentation findings were investigated
-and remediated. The preliminary signals understated the implemented feature set
-and test inventory, but correctly identified integration seams, test visibility,
-and operator-polish work worth completing.
+The repository-wide architecture, security, functionality, memory/SSOT, code
+structure, testing, delivery, and documentation findings were rechecked and the
+highest-risk implementation gaps were closed. DocColab is now a production
+candidate with explicit deployment prerequisites, not a claim that every
+operator-specific control is automatically provisioned.
 
 ## Resolved findings
 
@@ -32,17 +32,25 @@ and operator-polish work worth completing.
   safety defaults, CLI errors, audit outcomes, and read-only live-provider smoke
   fixtures.
 - A tag-gated build, metadata check, wheel smoke test, artifact, and PyPI trusted
-  publishing workflow is configured. External publisher/environment registration
-  is an operator-controlled activation step.
+  publishing workflow is configured. Release tags must be on `main`, pass the
+  reusable quality workflow, generate an SBOM, and receive provenance attestation.
+- Transient provider failures use bounded retry/backoff with throttling support.
+  One state database is guarded by an exclusive process lock, and shutdown drains
+  in-flight work.
+- Liveness and readiness are distinct. Online SQLite backups are integrity
+  checked, state events have configurable retention, and audit logs rotate.
+- Guided setup stores API tokens in the OS keyring. Environment variables remain
+  an explicit unattended-service fallback.
+- CI runs every branch from `uv.lock`, and third-party Actions are pinned to
+  immutable revisions.
 - Setup, security, architecture, MCP, operations, testing, contribution, release,
   and memory guidance now describe the implemented behavior.
 
 ## Final verification
 
-The final local run collected 49 tests: 46 passed, and the three read-only live
+The current local run collected 61 tests: 58 passed, and the three read-only live
 provider checks skipped because no private fixture configuration was supplied.
-Branch coverage was 65.04% against the 60% floor. Ruff, mypy, Bandit, the
-wheel/sdist build, and Twine metadata checks all passed.
+Branch coverage remained above the enforced 60% floor. Ruff and mypy passed.
 
 The authoritative repository quality suite is:
 
@@ -55,10 +63,11 @@ python -m build
 python -m twine check dist/*
 ```
 
-The local `pip-audit` process could not validate the machine's TLS chain for
-PyPI, so no local vulnerability result is claimed. CI runs the same audit in a
-clean GitHub-hosted environment and treats failure as blocking; TLS verification
-was not bypassed.
+The release workflow and external PyPI trusted-publisher registration still
+require a real release rehearsal. Provider smoke checks still require private
+disposable fixtures. Storage encryption, service-account isolation, backup
+retention, alert routing, and recovery objectives remain deployment controls and
+are documented rather than silently assumed.
 
 Read-only cloud compatibility remains intentionally opt-in:
 

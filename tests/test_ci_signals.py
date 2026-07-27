@@ -16,6 +16,9 @@ def test_ci_workflow_runs_project_quality_gates() -> None:
     assert "pytest --cov-report=xml" in content
     assert "pip-audit" in content
     assert "bandit -c pyproject.toml -r agent" in content
+    assert "workflow_call:" in content
+    assert 'branches: ["**"]' in content
+    assert "uv sync --locked" in content
 
 
 def test_ci_workflow_surfaces_coverage_results() -> None:
@@ -43,7 +46,12 @@ def test_pyproject_is_the_single_coverage_source_of_truth() -> None:
 def test_release_workflow_builds_checks_and_uses_trusted_publishing() -> None:
     content = RELEASE_WORKFLOW.read_text(encoding="utf-8")
 
+    assert "uses: ./.github/workflows/ci.yml" in content
+    assert "needs: quality" in content
+    assert "git merge-base --is-ancestor" in content
     assert "python -m build" in content
     assert "twine check dist/*" in content
+    assert "cyclonedx1.5" in content
+    assert "pkgutil.walk_packages" in content
     assert "id-token: write" in content
     assert "pypa/gh-action-pypi-publish@" in content

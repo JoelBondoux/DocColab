@@ -2,9 +2,10 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: ["**"]
   pull_request:
     branches: [main, develop]
+  workflow_call:
 
 permissions:
   contents: read
@@ -19,29 +20,29 @@ jobs:
         python-version: ["3.11", "3.13", "3.14"]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
       - name: Install project
-        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+        run: python -m pip install uv==0.11.7 && uv sync --locked --extra dev
 
       - name: Lint
-        run: ruff check agent tests
+        run: uv run ruff check agent tests
 
       - name: Type-check
-        run: mypy agent
+        run: uv run mypy agent
 
       - name: Test with branch coverage
-        run: pytest --cov-report=xml
+        run: uv run pytest --cov-report=xml
 
       - name: Upload coverage artifact
         if: matrix.python-version == '3.14'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: coverage
           path: coverage.xml
@@ -51,19 +52,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.13"
           cache: pip
 
       - name: Install security tools and project
-        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+        run: python -m pip install uv==0.11.7 && uv sync --locked --extra dev
 
       - name: Audit dependencies
-        run: pip-audit
+        run: uv run pip-audit
 
       - name: Run Bandit SAST
-        run: bandit -c pyproject.toml -r agent
+        run: uv run bandit -c pyproject.toml -r agent

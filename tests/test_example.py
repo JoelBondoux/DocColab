@@ -13,6 +13,15 @@ def test_agent_cli_parses_config_and_command() -> None:
     assert arguments.command == "status"
 
 
+def test_agent_cli_parses_keyring_secret_command() -> None:
+    arguments = build_agent_parser().parse_args(
+        ["set-secret", "--name", "GITHUB_TOKEN"]
+    )
+
+    assert arguments.command == "set-secret"
+    assert arguments.name == "GITHUB_TOKEN"
+
+
 def test_mcp_cli_parses_owner_initialization() -> None:
     arguments = build_mcp_parser().parse_args(
         [

@@ -25,7 +25,8 @@ The launcher creates `.venv`, installs the project, and starts
   offering full-document replacement;
 - configures GitHub and leaves the OpenAI/Anthropic pipeline off unless selected;
 - creates the MCP server, project membership, and exposed-folder settings;
-- writes provider values only to the ignored `.env` file;
+- stores provider API tokens and the webhook verification token in the operating
+  system keyring; `.env` contains only non-secret local overrides;
 - keeps generated live configuration, membership files, and OAuth secrets out of Git;
 - generates a high-entropy webhook token;
 - issues the first owner bearer token once while storing only its SHA-256 digest;
@@ -138,18 +139,25 @@ broad write scope is enabled.
 Create a fine-grained personal access token restricted to the target repository.
 Grant repository Contents read/write and Pull requests read/write. If tags or
 branch protection require additional organization approval, obtain that approval.
-Put the token in `.env` as `GITHUB_TOKEN`.
+Store the token without exposing it on the command line:
+
+```powershell
+doccolab set-secret --name GITHUB_TOKEN
+```
+
+For an unattended service account without a usable keyring, set `GITHUB_TOKEN`
+through the service manager's protected environment configuration.
 
 Set `github.owner`, `repository`, `branch`, and commit identity in `config.json`.
 Never put the PAT directly in JSON.
 
 ## 5. AI providers
 
-Create an API key in the provider console and set only the provider you use:
+Create an API key in the provider console and store only the provider you use:
 
-```dotenv
-OPENAI_API_KEY=
-ANTHROPIC_API_KEY=
+```powershell
+doccolab set-secret --name OPENAI_API_KEY
+doccolab set-secret --name ANTHROPIC_API_KEY
 ```
 
 AI is disabled by default and human changes are never automatically sent to a
@@ -235,3 +243,18 @@ Common configuration, authorization, credential, and provider failures return a
 concise operator message. Exit codes are `0` for success, `1` for an operation or
 provider failure, `2` for invalid configuration, `3` for denied access, and `130`
 for cancellation.
+
+## Secret precedence and rotation
+
+DocColab checks a named environment variable first, then the
+`doccolab-secrets` operating-system keyring service. This precedence allows
+service managers to inject credentials without modifying configuration files.
+
+```powershell
+doccolab set-secret --name GITHUB_TOKEN
+doccolab delete-secret --name GITHUB_TOKEN
+```
+
+Restart the running agent after changing a provider credential. Revoke the old
+credential at its provider after the replacement has passed a read-only smoke
+test.

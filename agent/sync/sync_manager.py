@@ -4,7 +4,7 @@ import asyncio
 import hashlib
 import logging
 from dataclasses import replace
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 from agent.ai.pipeline import RewritePipeline
 from agent.config import AppConfig, DocumentConfig
@@ -56,6 +56,9 @@ class SyncManager:
             onedrive=onedrive,
         )
         self._locks = {document_id: asyncio.Lock() for document_id in self.documents}
+        self.state.prune_events(
+            datetime.now(UTC) - timedelta(days=config.agent.event_retention_days)
+        )
         for document_id in self.documents:
             self.state.ensure_document(document_id)
 

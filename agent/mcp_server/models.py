@@ -74,6 +74,8 @@ class MCPServerConfig(StrictModel):
     users_file: Path = Path("registry/users.json")
     projects_directory: Path = Path("registry/projects")
     audit_log: Path = Path(".doccolab/audit.jsonl")
+    audit_max_bytes: int = Field(default=10 * 1024 * 1024, ge=1024)
+    audit_backup_count: int = Field(default=10, ge=1, le=100)
     allowed_project_roots: list[Path]
     hot_reload_seconds: int = Field(default=5, ge=1)
     run_sync_agents: bool = True

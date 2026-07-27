@@ -24,9 +24,13 @@ multi-project access control, and private remote access through Tailscale.
 - Safe first-run defaults: cloud providers and AI are disabled, Google is
   read-only unless non-atomic replacement is explicitly acknowledged, and broad
   provider consent must be acknowledged before an integration can be enabled.
-- Dependabot for Python and GitHub Actions, CI on Python 3.11/3.13/3.14, Ruff,
-  mypy, enforced pytest branch coverage, pip-audit, Bandit, dependency review,
-  CodeQL, and a trusted-publishing release workflow.
+- Bounded retry/backoff for provider throttling and transient failures, one-writer
+  state locking, graceful sync draining, readiness reporting, online SQLite
+  backups, event retention, and bounded audit logs.
+- Dependabot for Python and GitHub Actions, a committed dependency lock, CI on
+  Python 3.11/3.13/3.14, Ruff, mypy, enforced pytest branch coverage, pip-audit,
+  Bandit, dependency review, CodeQL, and a gated trusted-publishing workflow with
+  package provenance and a CycloneDX SBOM.
 
 ## Architecture
 
@@ -86,6 +90,9 @@ doccolab-mcp --config mcp-config.json serve
 
 Store the one-time owner bearer token in your MCP client’s secret storage. Do not
 commit `.env`, OAuth files, bearer tokens, local state, or document exports.
+The guided installer stores provider secrets in the operating-system keyring.
+For unattended service accounts, environment variables remain an explicit
+fallback.
 
 For a single project sync agent:
 
@@ -104,16 +111,19 @@ doccolab --config config.json run
 - [Private Tailscale access](docs/TAILSCALE.md)
 - [Provider API examples](docs/API_EXAMPLES.md)
 - [Operations and versioning](docs/OPERATIONS.md)
+- [Production deployment](docs/DEPLOYMENT.md)
 - [Testing](docs/TESTING.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Security policy](SECURITY.md)
 
 ## Project status
 
-This is an executable reference implementation. Cloud integrations require your
-own OAuth applications, API keys, provider-side consent, and read-only live smoke
-verification. Test first on copies of non-sensitive documents before enabling any
-write path.
+This is a production candidate, not a hosted turnkey service. Its local quality
+gates, runtime safety controls, backup path, and release controls are implemented.
+Each deployment still needs its own OAuth applications, secret-store policy,
+encrypted storage, recovery objectives, provider-side consent, supervised process,
+monitoring, and read-only live smoke verification. Test first on copies of
+non-sensitive documents before enabling any write path.
 
 ## License
 

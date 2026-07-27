@@ -39,7 +39,11 @@ class MCPService:
         self.access = AccessController(projects)
         self.paths = ProjectPathResolver()
         self.files = ProjectFileService(config, self.paths)
-        self.audit = AuditLogger(config.audit_log)
+        self.audit = AuditLogger(
+            config.audit_log,
+            max_bytes=config.audit_max_bytes,
+            backup_count=config.audit_backup_count,
+        )
 
     def begin(
         self,

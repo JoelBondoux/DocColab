@@ -6,7 +6,7 @@ import json
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import uvicorn
 from mcp.server.fastmcp import FastMCP
@@ -187,17 +187,33 @@ def create_application(
     )
     register_tools(mcp, service)
     app = mcp.streamable_http_app()
-
-    async def health(_: Request) -> JSONResponse:
-        return JSONResponse({"status": "ok", "service": "doccolab-mcp"})
-
-    app.routes.append(Route("/healthz", endpoint=health, methods=["GET"]))
-    authenticated_app = BearerAuthMiddleware(app, users)
     supervisor = SyncSupervisor(
         server_config=config,
         projects=projects,
         runtimes=runtimes,
     )
+
+    async def health(_: Request) -> JSONResponse:
+        return JSONResponse({"status": "ok", "service": "doccolab-mcp"})
+
+    async def readiness(_: Request) -> JSONResponse:
+        status = supervisor.status()
+        public_status = {
+            "ready": status["ready"],
+            "sync_agents_enabled": status["sync_agents_enabled"],
+            "active_projects": status["active_projects"],
+            "running_projects": status["running_projects"],
+            "failed_projects": len(cast(list[str], status["failed_projects"])),
+            "missing_projects": len(cast(list[str], status["missing_projects"])),
+        }
+        return JSONResponse(
+            public_status,
+            status_code=200 if bool(status["ready"]) else 503,
+        )
+
+    app.routes.append(Route("/healthz", endpoint=health, methods=["GET"]))
+    app.routes.append(Route("/readyz", endpoint=readiness, methods=["GET"]))
+    authenticated_app = BearerAuthMiddleware(app, users)
     return MCPApplication(app=authenticated_app, mcp=mcp, supervisor=supervisor)
 
 

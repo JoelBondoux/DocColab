@@ -64,8 +64,13 @@ async def test_streamable_http_requires_bearer_and_accepts_mcp_initialize(
                 },
                 json=request,
             )
+            live = await client.get("/healthz")
+            ready = await client.get("/readyz")
 
     assert unauthorized.status_code == 401
     assert authorized.status_code == 200
     assert authorized.json()["result"]["serverInfo"]["name"] == "DocColab"
     assert rebound.status_code == 421
+    assert live.status_code == 200
+    assert ready.status_code == 200
+    assert ready.json()["ready"] is True

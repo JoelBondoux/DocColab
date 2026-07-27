@@ -3,6 +3,7 @@ from __future__ import annotations
 import sqlite3
 import threading
 from dataclasses import asdict
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -254,6 +255,36 @@ class StateStore:
             return True
         except sqlite3.IntegrityError:
             return False
+
+    def prune_events(self, older_than: datetime) -> int:
+        if older_than.tzinfo is None:
+            raise ValueError("older_than must be timezone-aware")
+        cutoff = older_than.astimezone(UTC).isoformat()
+        with self._lock, self.connection:
+            cursor = self.connection.execute(
+                "DELETE FROM events WHERE received_at < ?",
+                (cutoff,),
+            )
+        return max(0, cursor.rowcount)
+
+    def backup(self, destination: Path) -> None:
+        destination = destination.resolve()
+        if destination == self.path.resolve():
+            raise ValueError("Backup destination must differ from the active database")
+        if destination.exists():
+            raise FileExistsError(f"Backup already exists: {destination}")
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        backup_connection = sqlite3.connect(destination)
+        try:
+            with self._lock:
+                self.connection.backup(backup_connection)
+        finally:
+            backup_connection.close()
+
+    def integrity_check(self) -> str:
+        with self._lock:
+            row = self.connection.execute("PRAGMA integrity_check").fetchone()
+        return str(row[0]) if row else "no result"
 
     def close(self) -> None:
         self.connection.close()

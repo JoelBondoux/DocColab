@@ -2,12 +2,16 @@ from __future__ import annotations
 
 import base64
 import difflib
+import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
 from urllib.parse import quote
 
 import httpx
+
+from agent.http_retry import RetryPolicy, request_with_retry
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,11 +42,15 @@ class GitHubClient:
         author_email: str = "doccolab-agent@users.noreply.github.com",
         timeout: float = 60.0,
         transport: httpx.BaseTransport | None = None,
+        retry_policy: RetryPolicy | None = None,
+        sleep: Callable[[float], object] = time.sleep,
     ) -> None:
         self.owner = owner
         self.repository = repository
         self.author_name = author_name
         self.author_email = author_email
+        self.retry_policy = retry_policy or RetryPolicy()
+        self.sleep = sleep
         self.client = httpx.Client(
             base_url=api_url,
             timeout=timeout,
@@ -60,7 +68,8 @@ class GitHubClient:
         return f"/repos/{quote(self.owner)}/{quote(self.repository)}"
 
     def get_file(self, path: str, branch: str) -> GitHubFile | None:
-        response = self.client.get(
+        response = self._request(
+            "GET",
             f"{self.repo_path}/contents/{quote(path, safe='/')}",
             params={"ref": branch},
         )
@@ -99,7 +108,8 @@ class GitHubClient:
         }
         if expected_blob_sha:
             payload["sha"] = expected_blob_sha
-        response = self.client.put(
+        response = self._request(
+            "PUT",
             f"{self.repo_path}/contents/{quote(path, safe='/')}",
             json=payload,
         )
@@ -116,14 +126,16 @@ class GitHubClient:
         )
 
     def branch_head(self, branch: str) -> str:
-        response = self.client.get(
+        response = self._request(
+            "GET",
             f"{self.repo_path}/git/ref/heads/{quote(branch, safe='')}"
         )
         response.raise_for_status()
         return str(response.json()["object"]["sha"])
 
     def ensure_branch(self, branch: str, from_branch: str) -> str:
-        response = self.client.get(
+        response = self._request(
+            "GET",
             f"{self.repo_path}/git/ref/heads/{quote(branch, safe='')}"
         )
         if response.status_code == 200:
@@ -131,7 +143,8 @@ class GitHubClient:
         if response.status_code != 404:
             response.raise_for_status()
         base_sha = self.branch_head(from_branch)
-        created = self.client.post(
+        created = self._request(
+            "POST",
             f"{self.repo_path}/git/refs",
             json={"ref": f"refs/heads/{branch}", "sha": base_sha},
         )
@@ -139,7 +152,8 @@ class GitHubClient:
         return base_sha
 
     def create_tag(self, tag: str, commit_sha: str) -> None:
-        response = self.client.post(
+        response = self._request(
+            "POST",
             f"{self.repo_path}/git/refs",
             json={"ref": f"refs/tags/{tag}", "sha": commit_sha},
         )
@@ -156,7 +170,8 @@ class GitHubClient:
         base: str,
         draft: bool = True,
     ) -> str:
-        response = self.client.post(
+        response = self._request(
+            "POST",
             f"{self.repo_path}/pulls",
             json={
                 "title": title,
@@ -167,7 +182,8 @@ class GitHubClient:
             },
         )
         if response.status_code == 422:
-            existing = self.client.get(
+            existing = self._request(
+                "GET",
                 f"{self.repo_path}/pulls",
                 params={"head": f"{self.owner}:{head}", "base": base, "state": "open"},
             )
@@ -191,6 +207,16 @@ class GitHubClient:
 
     def close(self) -> None:
         self.client.close()
+
+    def _request(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
+        return request_with_retry(
+            self.client,
+            method,
+            path,
+            policy=self.retry_policy,
+            sleep=self.sleep,
+            **kwargs,
+        )
 
 
 class GitHubVersionConflict(RuntimeError):

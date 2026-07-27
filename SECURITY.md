@@ -16,7 +16,9 @@ reproduction steps, impact, and suggested mitigation.
 - File access is restricted to configured project roots and exposed folders.
   Resolved paths are checked after symlink resolution.
 - Provider credentials are loaded from environment variables or the operating
-  system keyring. They must never be stored in project JSON or source control.
+  system keyring. Guided setup writes secrets to the keyring. Environment
+  variables are an unattended-service fallback and must never be stored in
+  project JSON or source control.
 - Provider integrations and AI are disabled by default. Enabling known broad
   Google or Microsoft consent requires an explicit configuration acknowledgement.
 - Google cloud writes remain read-only unless the operator separately acknowledges
@@ -32,8 +34,24 @@ reproduction steps, impact, and suggested mitigation.
 - The public webhook app exposes only `/healthz` and the token-verified Google
   callback; project status remains behind the authenticated CLI/MCP boundary.
 - Audit events record authorization attempts, denials, and final success/failure
-  without secrets. Tracked project memory excludes raw transcripts, contact
-  handles, provider payloads, and tool telemetry.
+  without secrets. Audit logs rotate at configured size/count bounds and use
+  owner-only permissions on POSIX systems. Tracked project memory excludes raw
+  transcripts, contact handles, provider payloads, and tool telemetry.
+
+## Data at rest
+
+The SQLite state database, audit logs, conversion workspace, and synchronized
+Markdown can contain document content or metadata in plaintext. DocColab does not
+provide application-level encryption for those files. Production operators must:
+
+- place project roots and `.doccolab` on an encrypted local volume;
+- restrict the service account and filesystem ACLs to the required project roots;
+- exclude `.doccolab`, `.env`, OAuth client files, and backups from source control;
+- encrypt backup destinations and control their retention separately;
+- avoid shared or cloud-synchronized temp directories for conversion work.
+
+Treat copied state backups as sensitive as the source documents. Use the online
+backup command and verify each backup before retention or transfer.
 
 Tailscale network access is an additional boundary, not a substitute for DocColab
 authentication. Rotate a bearer token immediately if it is exposed.

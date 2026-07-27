@@ -80,8 +80,10 @@ class SyncSupervisor:
                 fingerprint = self.runtimes.fingerprint(project)
                 task = self.tasks.get(project_id)
                 if task and (task.done() or self.fingerprints.get(project_id) != fingerprint):
-                    if task.done() and task.exception():
-                        logger.error("Sync agent stopped for %s: %r", project_id, task.exception())
+                    if task.done():
+                        error = None if task.cancelled() else task.exception()
+                        if error:
+                            logger.error("Sync agent stopped for %s: %r", project_id, error)
                     await self._stop_project(project_id)
                     task = None
                 if task is None:
@@ -106,13 +108,55 @@ class SyncSupervisor:
     def stop(self) -> None:
         self.stop_event.set()
 
+    def status(self) -> dict[str, object]:
+        if not self.server_config.run_sync_agents:
+            return {
+                "ready": True,
+                "sync_agents_enabled": False,
+                "active_projects": 0,
+                "running_projects": 0,
+                "missing_projects": [],
+                "failed_projects": [],
+            }
+        try:
+            active = sorted(
+                project.id for project in self.projects.list() if project.enabled
+            )
+        except Exception as exc:
+            return {
+                "ready": False,
+                "sync_agents_enabled": True,
+                "active_projects": 0,
+                "running_projects": 0,
+                "missing_projects": [],
+                "failed_projects": [],
+                "registry_error": type(exc).__name__,
+            }
+        failed = sorted(
+            project_id
+            for project_id, task in self.tasks.items()
+            if task.done() and (task.cancelled() or task.exception() is not None)
+        )
+        running = sorted(
+            project_id for project_id, task in self.tasks.items() if not task.done()
+        )
+        missing = sorted(set(active) - set(self.tasks))
+        return {
+            "ready": not missing and not failed,
+            "sync_agents_enabled": True,
+            "active_projects": len(active),
+            "running_projects": len(running),
+            "missing_projects": missing,
+            "failed_projects": failed,
+        }
+
     async def _stop_project(self, project_id: str) -> None:
-        task = self.tasks.pop(project_id, None)
-        self.fingerprints.pop(project_id, None)
+        task = self.tasks.get(project_id)
         runtime = self.runtimes._entries.get(project_id)
         if runtime:
             runtime.manager.stop()
         if task:
-            task.cancel()
             await asyncio.gather(task, return_exceptions=True)
+        self.tasks.pop(project_id, None)
+        self.fingerprints.pop(project_id, None)
         await asyncio.to_thread(self.runtimes.invalidate, project_id)

@@ -15,7 +15,7 @@ class BearerAuthMiddleware:
         app: Any,
         users: UserRegistry,
         *,
-        public_paths: tuple[str, ...] = ("/healthz",),
+        public_paths: tuple[str, ...] = ("/healthz", "/readyz"),
     ) -> None:
         self.app = app
         self.users = users

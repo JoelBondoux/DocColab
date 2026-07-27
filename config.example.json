@@ -6,7 +6,8 @@
     "public_webhook_base_url": null,
     "state_database": ".doccolab/state.db",
     "workspace_directory": ".doccolab/work",
-    "log_level": "INFO"
+    "log_level": "INFO",
+    "event_retention_days": 30
   },
   "google": {
     "enabled": false,

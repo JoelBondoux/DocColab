@@ -5,6 +5,8 @@
   "users_file": "registry/users.json",
   "projects_directory": "registry/projects",
   "audit_log": ".doccolab/audit.jsonl",
+  "audit_max_bytes": 10485760,
+  "audit_backup_count": 10,
   "allowed_project_roots": [
     "C:/Users/your-name/Documents/DocColab"
   ],
