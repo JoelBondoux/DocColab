@@ -37,7 +37,7 @@ jobs:
         run: mypy agent
 
       - name: Test with branch coverage
-        run: pytest --cov=agent --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=50
+        run: pytest --cov=agent --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=80
 
       - name: Upload coverage artifact
         if: matrix.python-version == '3.14'
