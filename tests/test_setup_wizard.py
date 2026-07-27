@@ -64,7 +64,11 @@ def test_generate_setup_creates_valid_isolated_configuration(tmp_path: Path) -> 
     assert stored_secrets["OPENAI_API_KEY"] == "openai-secret"
     assert stored_secrets["GITHUB_TOKEN"] == "github-secret"
     assert len(stored_secrets["GOOGLE_WEBHOOK_TOKEN"]) >= 32
-    assert "doccolab.example.ts.net" in server_config.allowed_hosts
+    assert server_config.allowed_hosts == [
+        "127.0.0.1:*",
+        "localhost:*",
+        "doccolab.example.ts.net",
+    ]
     assert (tmp_path / "documents").is_dir()
     assert (tmp_path / "references").is_dir()
 
