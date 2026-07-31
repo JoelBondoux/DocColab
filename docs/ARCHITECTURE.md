@@ -132,7 +132,8 @@ canonical Git commit
 
 ## Versioning
 
-- Routine integration uses `develop`; releases use protected `main`.
+- Routine work uses short-lived branches from protected `main`; release tags
+  identify published versions on `main`.
 - Each document normally uses its configured branch or the project GitHub branch.
 - Human imports and AI rewrites are separate commits for attribution and review.
 - Successful sync `N` creates `doc/<document-id>/v<major>.<minor>.<N>`.

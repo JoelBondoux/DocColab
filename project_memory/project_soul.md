@@ -20,7 +20,8 @@ documents.
 - Safety and security regressions are correctness bugs, not polish work.
 - Long-term project context belongs in the SSOT under `project_memory/`.
 - Provider credentials live in SecretStorage, not in project memory or source.
-- `develop` is the routine integration branch and `main` is the protected release-ready branch.
+- Use short-lived branches from protected `main`; merge only through reviewed,
+  green pull requests.
 - `docs/ARCHITECTURE.md`, `SECURITY.md`, and `docs/OPERATIONS.md` are the
   implementation, security, and operational sources of truth.
 
