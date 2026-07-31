@@ -2,6 +2,11 @@
 .env
 .env.*
 !.env.example
+config.json
+mcp-config.json
+registry/users.json
+registry/projects/*.json
+secrets/
 
 # Editors and operating systems
 .idea/
@@ -24,7 +29,26 @@ coverage/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.test-*/
 .venv/
+.coverage
+coverage.xml
 
 # Document synchronization working data
 .doccolab/
+
+# Local agent/session telemetry (summaries may be committed separately)
+project_memory/sessions/*/
+project_memory/operations/project-run-*.json
+project_memory/agents/tool-intents/
+
+# Local provider credentials
+client_secret*.json
+credentials*.json
+token*.json
+
+# Python packaging and tooling
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.tox/

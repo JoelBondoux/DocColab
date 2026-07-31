@@ -1,0 +1,84 @@
+{
+  "agent": {
+    "poll_interval_seconds": 30,
+    "webhook_host": "127.0.0.1",
+    "webhook_port": 8787,
+    "public_webhook_base_url": null,
+    "state_database": ".doccolab/state.db",
+    "workspace_directory": ".doccolab/work",
+    "log_level": "INFO",
+    "event_retention_days": 30
+  },
+  "google": {
+    "enabled": false,
+    "client_secrets_file": "secrets/google-oauth-client.json",
+    "credential_keyring_service": "doccolab-google",
+    "credential_keyring_user": "default",
+    "webhook_token_env": "GOOGLE_WEBHOOK_TOKEN",
+    "watch_ttl_seconds": 604800,
+    "acknowledge_broad_access": false,
+    "write_mode": "read_only",
+    "acknowledge_non_atomic_replacement": false
+  },
+  "microsoft": {
+    "enabled": false,
+    "client_id_env": "MICROSOFT_CLIENT_ID",
+    "tenant": "common",
+    "scopes": [
+      "Files.ReadWrite.All",
+      "User.Read"
+    ],
+    "credential_keyring_service": "doccolab-microsoft",
+    "credential_keyring_user": "default",
+    "acknowledge_broad_access": false
+  },
+  "github": {
+    "enabled": false,
+    "owner": "JoelBondoux",
+    "repository": "DocColab",
+    "token_env": "GITHUB_TOKEN",
+    "branch": "main",
+    "api_url": "https://api.github.com",
+    "api_version": "2026-03-10",
+    "commit_author_name": "DocColab Agent",
+    "commit_author_email": "doccolab-agent@users.noreply.github.com",
+    "tag_prefix": "doc"
+  },
+  "conversion": {
+    "pandoc_binary": "pandoc",
+    "reference_docx": null,
+    "prefer_pandoc": true
+  },
+  "ai": {
+    "enabled": false,
+    "provider": "openai",
+    "openai_model": "gpt-5.6-terra",
+    "anthropic_model": "claude-sonnet-5",
+    "max_output_tokens": 32000,
+    "auto_rewrite_human_changes": false,
+    "operations": [],
+    "tone": "clear, professional, and approachable",
+    "style_rules": [
+      "Preserve factual meaning.",
+      "Preserve Markdown headings, lists, tables, emphasis, and links.",
+      "Do not invent citations or facts."
+    ]
+  },
+  "versioning": {
+    "major": 0,
+    "minor": 1,
+    "create_tags": true
+  },
+  "documents": [
+    {
+      "id": "example-document",
+      "title": "Example document",
+      "markdown_path": "documents/example-document.md",
+      "google_file_id": "replace-with-google-drive-file-id",
+      "microsoft_drive_id": null,
+      "microsoft_item_id": "replace-with-onedrive-drive-item-id",
+      "github_branch": null,
+      "enabled": true
+    }
+  ]
+}

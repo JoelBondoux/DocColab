@@ -1,0 +1,26 @@
+# Default owner
+* @JoelBondoux
+
+# Project documentation and architecture
+/docs/** @JoelBondoux
+/project_memory/** @JoelBondoux
+/README.md @JoelBondoux
+/CONTRIBUTING.md @JoelBondoux
+/SECURITY.md @JoelBondoux
+
+# Core agent and tests
+/agent/** @JoelBondoux
+/tests/** @JoelBondoux
+
+# Configuration and examples
+/.gitignore @JoelBondoux
+/.env.example @JoelBondoux
+/pyproject.toml @JoelBondoux
+/setup.ps1 @JoelBondoux
+/config.example.json @JoelBondoux
+/mcp-config.example.json @JoelBondoux
+/project.example.json @JoelBondoux
+/users.example.json @JoelBondoux
+
+# GitHub automation
+/.github/** @JoelBondoux
