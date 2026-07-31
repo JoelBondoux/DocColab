@@ -37,7 +37,7 @@ $env:DOCCOLAB_LIVE_CONFIG = 'C:\private\doccolab-live\config.json'
 
 ## CI
 
-Every branch push and pull request to `develop` or `main` runs from the committed
+Every branch push and every pull request targeting `main` runs from the committed
 `uv.lock` without re-resolving dependencies:
 
 - Ruff and strict mypy;

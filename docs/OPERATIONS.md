@@ -75,9 +75,9 @@ history or provider revisions.
 
 ## Branches, tags, and release hygiene
 
-- Develop changes on `develop`.
-- Require CI and review before merging release-ready changes to `main`.
-- Protect both branches against force pushes.
+- Create short-lived branches from the latest `main`.
+- Require CI and review before merging any change to `main`.
+- Protect `main` against direct and force pushes.
 - Document sync conflicts use generated `conflicts/...` branches.
 - Successful document versions use `doc/<id>/v<major>.<minor>.<sequence>`.
 - Dependabot groups Python and Actions updates into weekly pull requests.

@@ -38,4 +38,4 @@
 
 ### branching
 
-- 'develop' is the routine integration branch and 'main' is the protected release-ready branch.
+- Use short-lived branches from protected `main`; merge only through reviewed, green pull requests.
