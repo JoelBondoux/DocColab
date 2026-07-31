@@ -4,6 +4,10 @@ All notable changes to DocColab are documented here.
 
 ## Unreleased
 
+No changes yet.
+
+## 0.1.0 — 2026-07-31
+
 - Make cloud providers and AI opt-in, require explicit acknowledgement for broad
   provider consent, default Google to read-only, and gate its non-atomic
   full-document replacement behind a separate acknowledgement.
@@ -18,9 +22,6 @@ All notable changes to DocColab are documented here.
   plus opt-in read-only live smoke tests.
 - Add PyPI trusted-publishing release automation and align security, setup,
   operations, testing, architecture, and project-memory documentation.
-
-## 0.1.0 — 2026-07-26
-
 - Add the Python document synchronization agent for Google Docs, OneDrive,
   GitHub, OpenAI, and Anthropic.
 - Add DOCX ↔ Markdown conversion with Pandoc and pure-Python paths.
